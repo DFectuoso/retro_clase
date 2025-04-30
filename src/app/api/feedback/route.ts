@@ -4,7 +4,13 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { name, description } = body;
+    const { name, description, email } = body;
+    
+    console.log(`[Form Creation] Received form data:`, JSON.stringify({ 
+      name, 
+      description, 
+      email: email || '(not provided)' 
+    }));
 
     if (!name || !description) {
       return NextResponse.json(
@@ -17,8 +23,11 @@ export async function POST(req: NextRequest) {
       data: {
         name,
         description,
+        email: email || null, // Make email optional
       },
     });
+    
+    console.log(`[Form Creation] Created form with ID: ${feedbackForm.id}, Email: ${feedbackForm.email || '(not provided)'}`);
 
     return NextResponse.json(feedbackForm, { status: 201 });
   } catch (error) {

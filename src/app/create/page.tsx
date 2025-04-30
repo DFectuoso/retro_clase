@@ -8,6 +8,7 @@ export default function CreateFeedbackForm() {
   const [formData, setFormData] = useState({
     name: '',
     description: '',
+    email: '',
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
@@ -74,7 +75,7 @@ export default function CreateFeedbackForm() {
           />
         </div>
 
-        <div className="mb-10">
+        <div className="mb-8">
           <label htmlFor="description" className="block text-[#0F2642] font-medium mb-3 text-lg">
             Descripción
           </label>
@@ -88,6 +89,24 @@ export default function CreateFeedbackForm() {
             rows={4}
             className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#E3562A] focus:border-transparent transition-all"
           />
+        </div>
+
+        <div className="mb-10">
+          <label htmlFor="email" className="block text-[#0F2642] font-medium mb-3 text-lg">
+            Email (opcional)
+          </label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            value={formData.email}
+            onChange={handleChange}
+            placeholder="Recibe notificaciones cuando alguien responda"
+            className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#E3562A] focus:border-transparent transition-all"
+          />
+          <p className="text-sm text-gray-500 mt-2">
+            Si proporcionas tu email, recibirás una notificación cada vez que alguien envíe feedback.
+          </p>
         </div>
 
         <div className="flex justify-center">
