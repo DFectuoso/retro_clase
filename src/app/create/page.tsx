@@ -46,20 +46,20 @@ export default function CreateFeedbackForm() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-12 max-w-2xl">
-      <h1 className="text-3xl font-bold mb-8 text-center text-blue-600">
+    <div className="container mx-auto px-6 py-16 max-w-2xl">
+      <h1 className="text-3xl md:text-4xl font-bold mb-10 text-center text-[#0F2642]">
         Crear Nuevo Formulario de Feedback
       </h1>
 
       {error && (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
+        <div className="bg-[#CC3B36]/10 border border-[#CC3B36]/20 text-[#CC3B36] px-6 py-4 rounded-lg mb-8">
           {error}
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="bg-white shadow-md rounded-lg p-6">
-        <div className="mb-6">
-          <label htmlFor="name" className="block text-gray-700 font-medium mb-2">
+      <form onSubmit={handleSubmit} className="bg-white shadow-xl rounded-xl p-8 mb-10">
+        <div className="mb-8">
+          <label htmlFor="name" className="block text-[#0F2642] font-medium mb-3 text-lg">
             Nombre del Evento o Clase
           </label>
           <input
@@ -70,12 +70,12 @@ export default function CreateFeedbackForm() {
             onChange={handleChange}
             placeholder="Ej: Taller de Diseño Web"
             required
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#E3562A] focus:border-transparent transition-all"
           />
         </div>
 
-        <div className="mb-6">
-          <label htmlFor="description" className="block text-gray-700 font-medium mb-2">
+        <div className="mb-10">
+          <label htmlFor="description" className="block text-[#0F2642] font-medium mb-3 text-lg">
             Descripción
           </label>
           <textarea
@@ -86,7 +86,7 @@ export default function CreateFeedbackForm() {
             placeholder="Describe el evento o clase para el que deseas recibir feedback"
             required
             rows={4}
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#E3562A] focus:border-transparent transition-all"
           />
         </div>
 
@@ -94,20 +94,32 @@ export default function CreateFeedbackForm() {
           <button
             type="submit"
             disabled={isLoading}
-            className="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors disabled:bg-blue-400"
+            className="px-8 py-3 bg-[#E3562A] text-white font-medium rounded-lg hover:bg-[#CC3B36] transition-all duration-300 shadow-md transform hover:scale-105 disabled:bg-gray-400 disabled:transform-none disabled:hover:scale-100"
           >
             {isLoading ? 'Creando...' : 'Crear Formulario'}
           </button>
         </div>
       </form>
 
-      <div className="mt-8 bg-blue-50 p-6 rounded-lg">
-        <h2 className="text-xl font-semibold mb-4 text-blue-600">¿Cómo funciona?</h2>
-        <ol className="list-decimal pl-5 space-y-2 text-gray-700">
-          <li>Completa este formulario con la información de tu evento o clase.</li>
-          <li>Recibirás un enlace único que puedes compartir con tus participantes.</li>
-          <li>Ellos podrán calificar el evento y dejar comentarios de forma anónima.</li>
-          <li>Podrás ver los resultados en tiempo real en tu panel de administración.</li>
+      <div className="bg-gradient-to-br from-[#0F2642] to-[#1A3A5F] text-white p-8 rounded-xl shadow-xl">
+        <h2 className="text-xl font-semibold mb-6 text-[#F2ECDF]">¿Cómo funciona?</h2>
+        <ol className="space-y-4 text-[#F2ECDF]/90 ml-4">
+          <li className="flex items-start">
+            <span className="bg-[#E3562A] text-white h-6 w-6 rounded-full flex items-center justify-center font-bold text-sm mr-3 mt-0.5 flex-shrink-0">1</span>
+            <p>Completa este formulario con la información de tu evento o clase.</p>
+          </li>
+          <li className="flex items-start">
+            <span className="bg-[#E3562A] text-white h-6 w-6 rounded-full flex items-center justify-center font-bold text-sm mr-3 mt-0.5 flex-shrink-0">2</span>
+            <p>Recibirás un enlace único que puedes compartir con tus participantes.</p>
+          </li>
+          <li className="flex items-start">
+            <span className="bg-[#E3562A] text-white h-6 w-6 rounded-full flex items-center justify-center font-bold text-sm mr-3 mt-0.5 flex-shrink-0">3</span>
+            <p>Ellos podrán calificar el evento y dejar comentarios de forma anónima.</p>
+          </li>
+          <li className="flex items-start">
+            <span className="bg-[#E3562A] text-white h-6 w-6 rounded-full flex items-center justify-center font-bold text-sm mr-3 mt-0.5 flex-shrink-0">4</span>
+            <p>Podrás ver los resultados en tiempo real en tu panel de administración.</p>
+          </li>
         </ol>
       </div>
     </div>

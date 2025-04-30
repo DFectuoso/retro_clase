@@ -3,6 +3,13 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  
+  /* RetroFeedback color palette */
+  --navy: #0F2642;
+  --burgundy: #CC3B36;
+  --orange: #E3562A;
+  --gold: #F2B544;
+  --cream: #F2ECDF;
 }
 
 @theme inline {
@@ -14,13 +21,24 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: var(--navy);
+    --foreground: var(--cream);
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom focus styles */
+*:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 2px;
 }
