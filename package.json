@@ -2,21 +2,23 @@
   "name": "retro-feedback",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "setup-postgres": "node setup-postgres.js"
   },
   "dependencies": {
     "@prisma/client": "^6.7.0",
     "lucide-react": "^0.503.0",
     "next": "15.3.1",
+    "pg": "^8.15.6",
     "prisma": "^6.7.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "resend": "^4.4.1",
-    "sqlite3": "^5.1.7"
+    "resend": "^4.4.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

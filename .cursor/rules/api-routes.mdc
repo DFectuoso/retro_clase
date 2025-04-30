@@ -1,0 +1,182 @@
+---
+description: Every time we are fixing any route
+globs: 
+alwaysApply: false
+---
+# Next.js API Routes and Page Components Guidelines
+
+## Route Handler Structure for App Router
+
+When creating API route handlers in the App Router (app directory), use the following pattern:
+
+```typescript
+import { NextRequest, NextResponse } from 'next/server';
+
+export async function HTTP_METHOD(
+  request: NextRequest,
+  { params }: { params: Promise<{ paramName: string }> }
+): Promise<NextResponse> {
+  try {
+    // IMPORTANT: Route parameters must be awaited in Next.js App Router
+    const { paramName } = await params;
+    
+    // Your handler logic
+    
+    return NextResponse.json({ data: 'response' });
+  } catch (error) {
+    console.error('Error in API route:', error);
+    return NextResponse.json(
+      { message: 'Internal server error' },
+      { status: 500 }
+    );
+  }
+}
+```
+
+## Page Component Structure for App Router
+
+Similarly, page components must also handle both params and searchParams as Promises:
+
+```typescript
+// app/(tenant)/[param]/page.tsx
+export default async function Page({
+  params,
+  searchParams
+}: {
+  params: Promise<{ param: string }>;
+  searchParams: Promise<{ query?: string }>;
+}) {
+  // IMPORTANT: Both params and searchParams must be awaited in Next.js App Router
+  const { param } = await params;
+  const resolvedSearchParams = await searchParams;
+  
+  // Your page logic or pass to client component
+  return (
+    <ClientComponent param={param} searchParams={resolvedSearchParams} />
+  );
+}
+```
+
+## Important Rules
+
+1. **Handling params and searchParams as Promises**:
+   - In Next.js App Router, both `params` and `searchParams` are passed as Promises and must be awaited
+   - Always use `const { paramName } = await params;` to correctly extract parameters
+   - Always use `const resolvedSearchParams = await searchParams;` to properly handle search parameters
+   - This is critical for ensuring type safety and correct behavior
+
+2. **Type the parameters correctly**:
+   - For API routes: 
+     - Use `NextRequest` for the request
+     - Use `{ params: Promise<{ paramName: string }> }` for the params object
+     - Return `Promise<NextResponse>` for clear typing
+   - For page components:
+     - Use `{ params: Promise<{ paramName: string }>; searchParams: { [key: string]: string | undefined } }`
+
+3. **Component structure**:
+   - For complex pages with client-side logic, split into server and client components
+   - Server component (page.tsx): Awaits params and passes unwrapped values to client component
+   - Client component: Handles UI, state, and interactions
+
+4. **API route structure**:
+   - Place API routes in `app/(api)/api/[param]/route.ts`
+   - For nested routes, use folder structure: `app/(api)/api/[param]/nested/route.ts`
+
+5. **Error handling**:
+   - Always use try/catch blocks in API routes
+   - Return appropriate status codes using NextResponse
+   - Log errors using console.error
+
+6. **Authentication**:
+   - Always check session/authentication at the beginning of route handlers
+   - Return 401 Unauthorized for unauthenticated requests
+
+7. **Response format**:
+   - Use consistent response structures
+   - Include status indicators in response bodies
+   - Set appropriate status codes
+
+## Examples
+
+### API Route Example
+
+```typescript
+// app/(api)/api/[subdomain]/resource/route.ts
+import { NextRequest, NextResponse } from 'next/server';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
+
+export async function GET(
+  request: NextRequest,
+  { params }: { params: Promise<{ subdomain: string }> }
+): Promise<NextResponse> {
+  try {
+    const session = await getServerSession(authOptions);
+    
+    // Check authentication
+    if (!session?.user) {
+      return NextResponse.json(
+        { message: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
+    
+    // Await params - this is critical!
+    const { subdomain } = await params;
+    
+    // Your API logic here
+    
+    return NextResponse.json({
+      success: true,
+      data: { subdomain }
+    });
+  } catch (error) {
+    console.error('Error in API route:', error);
+    return NextResponse.json(
+      { message: 'Internal server error' },
+      { status: 500 }
+    );
+  }
+}
+```
+
+### Page Component Example
+
+```typescript
+// app/(tenant)/[tenant]/page.tsx - Server Component
+export default async function PageWrapper({
+  params,
+  searchParams
+}: {
+  params: Promise<{ tenant: string }>;
+  searchParams: Promise<{ page?: string }>;
+}) {
+  // Await both params and searchParams - this is critical in Next.js App Router
+  const { tenant } = await params;
+  const resolvedSearchParams = await searchParams;
+  
+  // You can now pass the unwrapped values to a client component
+  return <ClientComponent tenant={tenant} searchParams={resolvedSearchParams} />;
+}
+
+// ClientComponent.tsx - Client Component
+"use client";
+
+export function ClientComponent({ 
+  tenant, 
+  searchParams 
+}: { 
+  tenant: string;
+  searchParams: { page?: string }; 
+}) {
+  // Client-side logic here
+  const currentPage = Number(searchParams.page) || 1;
+  
+  return (
+    <div>
+      <h1>Page for {tenant}</h1>
+      <p>Current page: {currentPage}</p>
+    </div>
+  );
+}
+``` 

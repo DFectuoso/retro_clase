@@ -8,7 +8,7 @@ interface FeedbackForm {
   description: string;
 }
 
-export default function FeedbackFormPage({ params }: { params: { id: string } }) {
+export default function FeedbackFormPage({ params }: { params: Promise<{ id: string }> }) {
   const [feedbackForm, setFeedbackForm] = useState<FeedbackForm | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -16,11 +16,31 @@ export default function FeedbackFormPage({ params }: { params: { id: string } })
   const [comment, setComment] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [formId, setFormId] = useState<string | null>(null);
 
   useEffect(() => {
+    // Get the ID from params (which is now a Promise)
+    const resolveParams = async () => {
+      try {
+        const resolvedParams = await params;
+        setFormId(resolvedParams.id);
+      } catch (err) {
+        console.error('Error resolving params:', err);
+        setError(err instanceof Error ? err.message : 'Error al cargar los parámetros');
+        setLoading(false);
+      }
+    };
+
+    resolveParams();
+  }, [params]);
+
+  useEffect(() => {
+    // Only fetch the form when we have resolved the formId
+    if (!formId) return;
+
     const fetchFeedbackForm = async () => {
       try {
-        const response = await fetch(`/api/feedback/${params.id}`);
+        const response = await fetch(`/api/feedback/${formId}`);
         const data = await response.json();
 
         if (!response.ok) {
@@ -36,10 +56,15 @@ export default function FeedbackFormPage({ params }: { params: { id: string } })
     };
 
     fetchFeedbackForm();
-  }, [params.id]);
+  }, [formId]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!formId) {
+      setError('Error al identificar el formulario');
+      return;
+    }
     
     if (score === null) {
       setError('Por favor, selecciona una puntuación');
@@ -50,7 +75,7 @@ export default function FeedbackFormPage({ params }: { params: { id: string } })
     setError('');
 
     try {
-      const response = await fetch(`/api/feedback/${params.id}/response`, {
+      const response = await fetch(`/api/feedback/${formId}/response`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

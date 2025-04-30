@@ -3,10 +3,11 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+  { params }: { params: Promise<{ id: string }> }
+): Promise<NextResponse> {
   try {
-    const { id: formId } = params;
+    // IMPORTANT: Await params before using them
+    const { id: formId } = await params;
 
     // First, check if the form exists
     const feedbackForm = await prisma.feedbackForm.findUnique({

@@ -13,10 +13,11 @@ function maskSecret(secret: string | undefined): string {
 
 export async function POST(
   req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+  { params }: { params: Promise<{ id: string }> }
+): Promise<NextResponse> {
   try {
-    const { id: formId } = params;
+    // IMPORTANT: Await params before using them
+    const { id: formId } = await params;
     const body = await req.json();
     const { score, comment } = body;
 
