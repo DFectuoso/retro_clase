@@ -56,7 +56,7 @@ export async function POST(
       
       try {
         const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || `https://${req.headers.get('host')}`;
-        const resultsUrl = `${baseUrl}/${formId}/results`;
+        const resultsUrl = `${baseUrl}/resultados/${formId}`;
         
         console.log(`[Email] Results URL: ${resultsUrl}`);
         
