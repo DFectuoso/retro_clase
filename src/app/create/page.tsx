@@ -48,19 +48,19 @@ export default function CreateFeedbackForm() {
 
   return (
     <div className="container mx-auto px-6 py-16 max-w-2xl">
-      <h1 className="text-3xl md:text-4xl font-bold mb-10 text-center text-[#0F2642]">
+      <h1 className="text-3xl md:text-4xl font-bold mb-10 text-center text-[#0F2642] dark:text-white">
         Crear Nuevo Formulario de Feedback
       </h1>
 
       {error && (
-        <div className="bg-[#CC3B36]/10 border border-[#CC3B36]/20 text-[#CC3B36] px-6 py-4 rounded-lg mb-8">
+        <div className="bg-[#CC3B36]/10 dark:bg-[#CC3B36]/20 border border-[#CC3B36]/20 dark:border-[#CC3B36]/30 text-[#CC3B36] dark:text-red-400 px-6 py-4 rounded-lg mb-8">
           {error}
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="bg-white shadow-xl rounded-xl p-8 mb-10">
+      <form onSubmit={handleSubmit} className="bg-white dark:bg-gray-800 shadow-xl rounded-xl p-8 mb-10">
         <div className="mb-8">
-          <label htmlFor="name" className="block text-[#0F2642] font-medium mb-3 text-lg">
+          <label htmlFor="name" className="block text-[#0F2642] dark:text-white font-medium mb-3 text-lg">
             Nombre del Evento o Clase
           </label>
           <input
@@ -71,12 +71,12 @@ export default function CreateFeedbackForm() {
             onChange={handleChange}
             placeholder="Ej: Taller de Diseño Web"
             required
-            className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#E3562A] focus:border-transparent transition-all"
+            className="w-full px-4 py-3 border border-gray-200 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#E3562A] focus:border-transparent transition-all dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
           />
         </div>
 
         <div className="mb-8">
-          <label htmlFor="description" className="block text-[#0F2642] font-medium mb-3 text-lg">
+          <label htmlFor="description" className="block text-[#0F2642] dark:text-white font-medium mb-3 text-lg">
             Descripción
           </label>
           <textarea
@@ -87,12 +87,12 @@ export default function CreateFeedbackForm() {
             placeholder="Describe el evento o clase para el que deseas recibir feedback"
             required
             rows={4}
-            className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#E3562A] focus:border-transparent transition-all"
+            className="w-full px-4 py-3 border border-gray-200 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#E3562A] focus:border-transparent transition-all dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
           />
         </div>
 
         <div className="mb-10">
-          <label htmlFor="email" className="block text-[#0F2642] font-medium mb-3 text-lg">
+          <label htmlFor="email" className="block text-[#0F2642] dark:text-white font-medium mb-3 text-lg">
             Email (opcional)
           </label>
           <input
@@ -102,9 +102,9 @@ export default function CreateFeedbackForm() {
             value={formData.email}
             onChange={handleChange}
             placeholder="Recibe notificaciones cuando alguien responda"
-            className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#E3562A] focus:border-transparent transition-all"
+            className="w-full px-4 py-3 border border-gray-200 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#E3562A] focus:border-transparent transition-all dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
           />
-          <p className="text-sm text-gray-500 mt-2">
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
             Si proporcionas tu email, recibirás una notificación cada vez que alguien envíe feedback.
           </p>
         </div>

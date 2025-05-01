@@ -101,9 +101,9 @@ export default function FeedbackFormPage({ params }: { params: Promise<{ id: str
     return (
       <div className="container mx-auto px-6 py-16 max-w-2xl text-center">
         <div className="animate-pulse">
-          <div className="h-8 bg-[#0F2642]/10 rounded-full w-3/4 mx-auto mb-8"></div>
-          <div className="h-4 bg-[#0F2642]/10 rounded-full w-1/2 mx-auto mb-4"></div>
-          <div className="h-64 bg-[#0F2642]/5 rounded-xl w-full mx-auto"></div>
+          <div className="h-8 bg-[#0F2642]/10 dark:bg-white/10 rounded-full w-3/4 mx-auto mb-8"></div>
+          <div className="h-4 bg-[#0F2642]/10 dark:bg-white/10 rounded-full w-1/2 mx-auto mb-4"></div>
+          <div className="h-64 bg-[#0F2642]/5 dark:bg-white/5 rounded-xl w-full mx-auto"></div>
         </div>
       </div>
     );
@@ -112,7 +112,7 @@ export default function FeedbackFormPage({ params }: { params: Promise<{ id: str
   if (error) {
     return (
       <div className="container mx-auto px-6 py-16 max-w-2xl">
-        <div className="bg-[#CC3B36]/10 border border-[#CC3B36]/20 text-[#CC3B36] px-6 py-4 rounded-lg">
+        <div className="bg-[#CC3B36]/10 dark:bg-[#CC3B36]/20 border border-[#CC3B36]/20 dark:border-[#CC3B36]/30 text-[#CC3B36] dark:text-red-400 px-6 py-4 rounded-lg">
           {error}
         </div>
       </div>
@@ -122,7 +122,7 @@ export default function FeedbackFormPage({ params }: { params: Promise<{ id: str
   if (!feedbackForm) {
     return (
       <div className="container mx-auto px-6 py-16 max-w-2xl">
-        <div className="bg-[#CC3B36]/10 border border-[#CC3B36]/20 text-[#CC3B36] px-6 py-4 rounded-lg">
+        <div className="bg-[#CC3B36]/10 dark:bg-[#CC3B36]/20 border border-[#CC3B36]/20 dark:border-[#CC3B36]/30 text-[#CC3B36] dark:text-red-400 px-6 py-4 rounded-lg">
           No se encontró el formulario
         </div>
       </div>
@@ -132,12 +132,12 @@ export default function FeedbackFormPage({ params }: { params: Promise<{ id: str
   if (submitted) {
     return (
       <div className="container mx-auto px-6 py-16 max-w-2xl text-center">
-        <div className="bg-[#7CC470]/10 border border-[#7CC470]/20 text-[#2A6B26] px-6 py-12 rounded-xl mb-6">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mx-auto mb-4 text-[#7CC470]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <div className="bg-[#7CC470]/10 dark:bg-[#7CC470]/20 border border-[#7CC470]/20 dark:border-[#7CC470]/30 text-[#2A6B26] dark:text-green-400 px-6 py-12 rounded-xl mb-6">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mx-auto mb-4 text-[#7CC470] dark:text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
-          <h2 className="text-3xl font-bold mb-4">¡Gracias por tu feedback!</h2>
-          <p className="text-lg">Tu respuesta ha sido registrada correctamente.</p>
+          <h2 className="text-3xl font-bold mb-4 dark:text-white">¡Gracias por tu feedback!</h2>
+          <p className="text-lg dark:text-gray-200">Tu respuesta ha sido registrada correctamente.</p>
         </div>
       </div>
     );
@@ -145,18 +145,18 @@ export default function FeedbackFormPage({ params }: { params: Promise<{ id: str
 
   return (
     <div className="container mx-auto px-6 py-16 max-w-2xl">
-      <h1 className="text-3xl md:text-4xl font-bold mb-4 text-[#0F2642]">{feedbackForm.name}</h1>
-      <p className="text-gray-700 mb-10">{feedbackForm.description}</p>
+      <h1 className="text-3xl md:text-4xl font-bold mb-4 text-[#0F2642] dark:text-white">{feedbackForm.name}</h1>
+      <p className="text-gray-700 dark:text-gray-300 mb-10">{feedbackForm.description}</p>
 
       {error && (
-        <div className="bg-[#CC3B36]/10 border border-[#CC3B36]/20 text-[#CC3B36] px-6 py-4 rounded-lg mb-6">
+        <div className="bg-[#CC3B36]/10 dark:bg-[#CC3B36]/20 border border-[#CC3B36]/20 dark:border-[#CC3B36]/30 text-[#CC3B36] dark:text-red-400 px-6 py-4 rounded-lg mb-6">
           {error}
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="bg-white shadow-xl rounded-xl p-8">
+      <form onSubmit={handleSubmit} className="bg-white dark:bg-gray-800 shadow-xl rounded-xl p-8">
         <div className="mb-10">
-          <label className="block text-[#0F2642] font-medium mb-6 text-lg">
+          <label className="block text-[#0F2642] dark:text-white font-medium mb-6 text-lg">
             ¿Qué tan probable es que recomiendes {feedbackForm.name} a un amigo o colega?
           </label>
           
@@ -173,7 +173,7 @@ export default function FeedbackFormPage({ params }: { params: Promise<{ id: str
                   buttonClass += "bg-[#7CC470] text-white border-[#7CC470] shadow-md";
                 }
               } else {
-                buttonClass += "bg-white text-[#0F2642] border-gray-200 hover:border-[#0F2642]/70 hover:scale-110";
+                buttonClass += "bg-white dark:bg-gray-700 text-[#0F2642] dark:text-white border-gray-200 dark:border-gray-600 hover:border-[#0F2642]/70 dark:hover:border-white/70 hover:scale-110";
               }
               
               return (
@@ -189,14 +189,14 @@ export default function FeedbackFormPage({ params }: { params: Promise<{ id: str
             })}
           </div>
           
-          <div className="flex justify-between text-sm text-gray-600 px-2">
+          <div className="flex justify-between text-sm text-gray-600 dark:text-gray-300 px-2">
             <span>Poco probable</span>
             <span>Muy probable</span>
           </div>
         </div>
 
         <div className="mb-8">
-          <label htmlFor="comment" className="block text-[#0F2642] font-medium mb-3 text-lg">
+          <label htmlFor="comment" className="block text-[#0F2642] dark:text-white font-medium mb-3 text-lg">
             ¿Algún comentario o sugerencia adicional?
           </label>
           <textarea
@@ -205,7 +205,7 @@ export default function FeedbackFormPage({ params }: { params: Promise<{ id: str
             onChange={(e) => setComment(e.target.value)}
             placeholder="Tu opinión es muy valiosa para nosotros"
             rows={4}
-            className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#E3562A] focus:border-transparent transition-all"
+            className="w-full px-4 py-3 border border-gray-200 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#E3562A] focus:border-transparent transition-all dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
           />
         </div>
 

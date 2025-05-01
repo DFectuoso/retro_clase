@@ -73,10 +73,10 @@ export default function SuccessPage({ params }: { params: Promise<{ id: string }
     return (
       <div className="container mx-auto px-6 py-16 max-w-2xl text-center">
         <div className="animate-pulse">
-          <div className="h-8 bg-[#0F2642]/10 rounded-full w-3/4 mx-auto mb-8"></div>
-          <div className="h-4 bg-[#0F2642]/10 rounded-full w-1/2 mx-auto mb-4"></div>
-          <div className="h-32 bg-[#0F2642]/5 rounded-xl w-full mx-auto mb-4"></div>
-          <div className="h-32 bg-[#0F2642]/5 rounded-xl w-full mx-auto"></div>
+          <div className="h-8 bg-[#0F2642]/10 dark:bg-white/10 rounded-full w-3/4 mx-auto mb-8"></div>
+          <div className="h-4 bg-[#0F2642]/10 dark:bg-white/10 rounded-full w-1/2 mx-auto mb-4"></div>
+          <div className="h-32 bg-[#0F2642]/5 dark:bg-white/5 rounded-xl w-full mx-auto mb-4"></div>
+          <div className="h-32 bg-[#0F2642]/5 dark:bg-white/5 rounded-xl w-full mx-auto"></div>
         </div>
       </div>
     );
@@ -85,7 +85,7 @@ export default function SuccessPage({ params }: { params: Promise<{ id: string }
   if (error || !feedbackForm) {
     return (
       <div className="container mx-auto px-6 py-16 max-w-2xl">
-        <div className="bg-[#CC3B36]/10 border border-[#CC3B36]/20 text-[#CC3B36] px-6 py-4 rounded-lg">
+        <div className="bg-[#CC3B36]/10 dark:bg-[#CC3B36]/20 border border-[#CC3B36]/20 dark:border-[#CC3B36]/30 text-[#CC3B36] dark:text-red-400 px-6 py-4 rounded-lg">
           {error || 'No se encontró el formulario'}
         </div>
         <div className="mt-8 text-center">
@@ -102,25 +102,25 @@ export default function SuccessPage({ params }: { params: Promise<{ id: string }
 
   return (
     <div className="container mx-auto px-6 py-16 max-w-2xl">
-      <div className="bg-gradient-to-br from-[#7CC470]/20 to-[#7CC470]/10 border border-[#7CC470]/20 text-[#2A6B26] px-6 py-8 rounded-xl mb-10 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-32 h-32 -m-8 bg-[#7CC470]/5 rounded-full"></div>
-        <div className="absolute bottom-0 left-0 w-24 h-24 -m-6 bg-[#7CC470]/5 rounded-full"></div>
+      <div className="bg-gradient-to-br from-[#7CC470]/20 to-[#7CC470]/10 dark:from-[#7CC470]/30 dark:to-[#7CC470]/20 border border-[#7CC470]/20 dark:border-[#7CC470]/30 text-[#2A6B26] dark:text-green-400 px-6 py-8 rounded-xl mb-10 relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-32 h-32 -m-8 bg-[#7CC470]/5 dark:bg-[#7CC470]/10 rounded-full"></div>
+        <div className="absolute bottom-0 left-0 w-24 h-24 -m-6 bg-[#7CC470]/5 dark:bg-[#7CC470]/10 rounded-full"></div>
         
         <div className="relative">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 mx-auto mb-4 text-[#7CC470]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 mx-auto mb-4 text-[#7CC470] dark:text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
-          <h2 className="text-2xl md:text-3xl font-bold mb-4 text-center">¡Formulario creado con éxito!</h2>
-          <p className="text-center text-lg">
+          <h2 className="text-2xl md:text-3xl font-bold mb-4 text-center dark:text-white">¡Formulario creado con éxito!</h2>
+          <p className="text-center text-lg dark:text-gray-200">
             Tu formulario para <strong>{feedbackForm.name}</strong> ha sido creado correctamente.
           </p>
         </div>
       </div>
 
       <div className="grid md:grid-cols-2 gap-6 mb-10">
-        <div className="bg-white shadow-xl rounded-xl p-6 border-t-4 border-[#E3562A]">
-          <h2 className="text-xl font-semibold mb-4 text-[#0F2642]">Enlace para compartir</h2>
-          <p className="mb-4 text-gray-600">
+        <div className="bg-white dark:bg-gray-800 shadow-xl rounded-xl p-6 border-t-4 border-[#E3562A]">
+          <h2 className="text-xl font-semibold mb-4 text-[#0F2642] dark:text-white">Enlace para compartir</h2>
+          <p className="mb-4 text-gray-600 dark:text-gray-300">
             Comparte este enlace con tus asistentes para recibir su retroalimentación:
           </p>
           
@@ -130,7 +130,7 @@ export default function SuccessPage({ params }: { params: Promise<{ id: string }
                 type="text"
                 value={shareableLink}
                 readOnly
-                className="w-full px-4 py-3 pr-20 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#E3562A] focus:border-transparent"
+                className="w-full px-4 py-3 pr-20 border border-gray-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-[#E3562A] focus:border-transparent dark:bg-gray-700 dark:text-white"
               />
               <button
                 onClick={() => copyToClipboard(shareableLink, 'shareable')}
@@ -142,9 +142,9 @@ export default function SuccessPage({ params }: { params: Promise<{ id: string }
           </div>
         </div>
 
-        <div className="bg-white shadow-xl rounded-xl p-6 border-t-4 border-[#F2B544]">
-          <h2 className="text-xl font-semibold mb-4 text-[#0F2642]">Enlace de resultados</h2>
-          <p className="mb-4 text-gray-600">
+        <div className="bg-white dark:bg-gray-800 shadow-xl rounded-xl p-6 border-t-4 border-[#F2B544]">
+          <h2 className="text-xl font-semibold mb-4 text-[#0F2642] dark:text-white">Enlace de resultados</h2>
+          <p className="mb-4 text-gray-600 dark:text-gray-300">
             Usa este enlace para ver los resultados y estadísticas (guárdalo en un lugar seguro):
           </p>
           
@@ -154,7 +154,7 @@ export default function SuccessPage({ params }: { params: Promise<{ id: string }
                 type="text"
                 value={resultsLink}
                 readOnly
-                className="w-full px-4 py-3 pr-20 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#F2B544] focus:border-transparent"
+                className="w-full px-4 py-3 pr-20 border border-gray-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-[#F2B544] focus:border-transparent dark:bg-gray-700 dark:text-white"
               />
               <button
                 onClick={() => copyToClipboard(resultsLink, 'results')}
@@ -176,7 +176,7 @@ export default function SuccessPage({ params }: { params: Promise<{ id: string }
         </Link>
         <Link
           href={`/resultados/${feedbackForm.id}`}
-          className="px-6 py-3 border-2 border-[#0F2642] text-[#0F2642] font-medium rounded-lg hover:bg-[#0F2642]/5 transition-all duration-300 transform hover:scale-105 text-center"
+          className="px-6 py-3 border-2 border-[#0F2642] dark:border-gray-400 text-[#0F2642] dark:text-gray-200 font-medium rounded-lg hover:bg-[#0F2642]/5 dark:hover:bg-gray-700 transition-all duration-300 transform hover:scale-105 text-center"
         >
           Ver Resultados
         </Link>
