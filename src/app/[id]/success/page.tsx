@@ -9,18 +9,38 @@ interface FeedbackForm {
   description: string;
 }
 
-export default function SuccessPage({ params }: { params: { id: string } }) {
+export default function SuccessPage({ params }: { params: Promise<{ id: string }> }) {
   const [feedbackForm, setFeedbackForm] = useState<FeedbackForm | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [shareableLink, setShareableLink] = useState('');
   const [resultsLink, setResultsLink] = useState('');
   const [copied, setCopied] = useState<'shareable' | 'results' | null>(null);
+  const [formId, setFormId] = useState<string | null>(null);
 
   useEffect(() => {
+    // Get the ID from params (which is now a Promise)
+    const resolveParams = async () => {
+      try {
+        const resolvedParams = await params;
+        setFormId(resolvedParams.id);
+      } catch (err) {
+        console.error('Error resolving params:', err);
+        setError(err instanceof Error ? err.message : 'Error al cargar los parámetros');
+        setLoading(false);
+      }
+    };
+
+    resolveParams();
+  }, [params]);
+
+  useEffect(() => {
+    // Only fetch the form when we have resolved the formId
+    if (!formId) return;
+
     const fetchFeedbackForm = async () => {
       try {
-        const response = await fetch(`/api/feedback/${params.id}`);
+        const response = await fetch(`/api/feedback/${formId}`);
         const data = await response.json();
 
         if (!response.ok) {
@@ -41,7 +61,7 @@ export default function SuccessPage({ params }: { params: { id: string } }) {
     };
 
     fetchFeedbackForm();
-  }, [params.id]);
+  }, [formId]);
 
   const copyToClipboard = (text: string, type: 'shareable' | 'results') => {
     navigator.clipboard.writeText(text);

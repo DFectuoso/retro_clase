@@ -32,16 +32,36 @@ interface ResultsData {
   responses: Response[];
 }
 
-export default function ResultsPage({ params }: { params: { id: string } }) {
+export default function ResultsPage({ params }: { params: Promise<{ id: string }> }) {
   const [resultsData, setResultsData] = useState<ResultsData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [copiedLink, setCopiedLink] = useState(false);
+  const [formId, setFormId] = useState<string | null>(null);
 
   useEffect(() => {
+    // Get the ID from params (which is now a Promise)
+    const resolveParams = async () => {
+      try {
+        const resolvedParams = await params;
+        setFormId(resolvedParams.id);
+      } catch (err) {
+        console.error('Error resolving params:', err);
+        setError(err instanceof Error ? err.message : 'Error al cargar los parámetros');
+        setLoading(false);
+      }
+    };
+
+    resolveParams();
+  }, [params]);
+
+  useEffect(() => {
+    // Only fetch the results when we have resolved the formId
+    if (!formId) return;
+
     const fetchResults = async () => {
       try {
-        const response = await fetch(`/api/feedback/${params.id}/results`);
+        const response = await fetch(`/api/feedback/${formId}/results`);
         const data = await response.json();
 
         if (!response.ok) {
@@ -57,7 +77,7 @@ export default function ResultsPage({ params }: { params: { id: string } }) {
     };
 
     fetchResults();
-  }, [params.id]);
+  }, [formId]);
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
@@ -207,8 +227,8 @@ export default function ResultsPage({ params }: { params: { id: string } }) {
                 
                 <div>
                   <div className="flex justify-between mb-2">
-                    <span className="text-sm font-medium text-[#A72A25]">Detractores (0-6)</span>
-                    <span className="text-sm font-medium text-[#A72A25]">
+                    <span className="text-sm font-medium text-[#8A2721]">Detractores (0-6)</span>
+                    <span className="text-sm font-medium text-[#8A2721]">
                       {stats.npsBreakdown.detractors} ({stats.totalResponses > 0 ? Math.round((stats.npsBreakdown.detractors / stats.totalResponses) * 100) : 0}%)
                     </span>
                   </div>
@@ -222,67 +242,66 @@ export default function ResultsPage({ params }: { params: { id: string } }) {
               </div>
             </div>
           </div>
-
-          <div className="bg-white shadow-xl rounded-xl p-8 mb-10 border-t-4 border-[#F2B544]">
-            <h2 className="text-xl font-semibold mb-4 text-[#0F2642]">Comparte el enlace de tu formulario</h2>
+          
+          <div className="bg-white shadow-xl rounded-xl p-8 border-t-4 border-[#0F2642] mb-10">
+            <h2 className="text-xl font-semibold mb-6 text-[#0F2642]">Respuestas Individuales</h2>
+            
+            {responses.length > 0 ? (
+              <div className="space-y-6">
+                {responses.map((response) => {
+                  let scoreClass = 'text-[#CC3B36]';
+                  if (response.score >= 9) {
+                    scoreClass = 'text-[#7CC470]';
+                  } else if (response.score >= 7) {
+                    scoreClass = 'text-[#F2B544]';
+                  }
+                  
+                  return (
+                    <div key={response.id} className="border-b border-gray-200 pb-6">
+                      <div className="flex flex-wrap items-center gap-3 mb-2">
+                        <span className={`text-xl font-bold ${scoreClass}`}>{response.score}/10</span>
+                        <span className="text-sm text-gray-500">
+                          {new Date(response.createdAt).toLocaleDateString('es-ES', { 
+                            year: 'numeric', 
+                            month: 'long', 
+                            day: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                          })}
+                        </span>
+                      </div>
+                      {response.comment ? (
+                        <p className="text-gray-700">{response.comment}</p>
+                      ) : (
+                        <p className="text-gray-500 italic">Sin comentarios</p>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <p className="text-gray-500 italic">No hay respuestas con comentarios</p>
+            )}
+          </div>
+          
+          <div className="bg-gradient-to-br from-[#0F2642]/10 to-[#1A3A5F]/5 border border-[#0F2642]/20 text-[#0F2642] px-6 py-6 rounded-xl">
+            <h3 className="text-lg font-semibold mb-4">Compartir formulario</h3>
             <div className="flex flex-col md:flex-row gap-3">
               <div className="relative flex-grow">
                 <input
                   type="text"
                   value={shareableLink}
                   readOnly
-                  className="w-full px-4 py-3 pr-20 border border-gray-200 rounded-lg"
+                  className="w-full px-4 py-3 pr-20 border border-[#0F2642]/30 rounded-lg bg-white/80 focus:outline-none"
                 />
                 <button
                   onClick={() => copyToClipboard(shareableLink)}
-                  className="absolute right-2 top-2 px-3 py-1 bg-[#F2B544] text-white font-medium rounded-md hover:bg-[#E3A432] transition-colors"
+                  className="absolute right-2 top-2 px-4 py-1 bg-[#0F2642] text-white font-medium rounded-md hover:bg-[#1A3A5F] transition-colors"
                 >
                   {copiedLink ? '¡Copiado!' : 'Copiar'}
                 </button>
               </div>
             </div>
-          </div>
-          
-          <div>
-            <h2 className="text-xl font-semibold mb-6 text-[#0F2642] flex items-center">
-              Comentarios 
-              <span className="ml-3 bg-[#0F2642] text-white text-sm px-2 py-0.5 rounded-full">
-                {responses.filter(r => r.comment).length}
-              </span>
-            </h2>
-            
-            {responses.filter(r => r.comment).length === 0 ? (
-              <p className="text-gray-600 bg-gray-50 p-6 rounded-xl text-center">No hay comentarios para mostrar</p>
-            ) : (
-              <div className="grid md:grid-cols-2 gap-4">
-                {responses
-                  .filter(r => r.comment)
-                  .map(response => {
-                    let badgeColor = '';
-                    if (response.score >= 9) {
-                      badgeColor = 'bg-[#7CC470]';
-                    } else if (response.score >= 7) {
-                      badgeColor = 'bg-[#F2B544]';
-                    } else {
-                      badgeColor = 'bg-[#CC3B36]';
-                    }
-                    
-                    return (
-                      <div key={response.id} className="bg-white shadow-md rounded-xl p-5 border-l-4 border-gray-200">
-                        <div className="flex items-center mb-3">
-                          <div className={`${badgeColor} w-9 h-9 rounded-full flex items-center justify-center font-medium text-white mr-3`}>
-                            {response.score}
-                          </div>
-                          <div className="text-sm text-gray-500">
-                            {new Date(response.createdAt).toLocaleDateString()}
-                          </div>
-                        </div>
-                        <p className="text-gray-700">{response.comment}</p>
-                      </div>
-                    );
-                  })}
-              </div>
-            )}
           </div>
         </>
       )}
